@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Posts Feed</title>
+</head>
+<body>
+    <h1>Feed</h1>
+    {% for post in posts %}
+        <div>
+            <h3>{{ post.author.username }}</h3>
+            <p>{{ post.post_text }}</p>
+            <p>Created at: {{ post.created_at }}</p>
+            <p>Likes: {{ post.likes.count }}</p>
+        </div>
+        <hr>
+    {% empty %}
+        <p>No Posts yet.</p>
+    {% endfor %}
+
+    <a href="{% url 'create_post' %}">Create a Post</a>
+</body>
+</html>
