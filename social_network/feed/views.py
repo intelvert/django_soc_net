@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseForbidden
 from .models import Post, Like
 from .forms import PostForm
 # Create your views here.
@@ -20,10 +21,16 @@ def create_post(request):
         form=PostForm()
     return render(request, 'feed/create_post.html', {'form':form})
 
-
 def post_detail(request, post_id):
     post=get_object_or_404(Post, id=post_id)
-    render(request, 'feed/post_detail.html', {'post':post})
+    return render(request, 'feed/post_detail.html', {'post':post})
 
-#def delete_post
+def delete_post(request, post_id):
+    post=get_object_or_404(Post, id=post_id)
+    if post.author!=request.user:
+        return HttpResponseForbidden("You have no rights to delete this post.")
+    if request.method=='POST':
+        post.delete()
+        return redirect('feed')
+    return render(request, 'feed/confirm_delete.html', {'post':post})
 #def like_post
