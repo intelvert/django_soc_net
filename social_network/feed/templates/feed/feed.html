@@ -5,6 +5,20 @@
 </head>
 <body>
     <h1>Feed</h1>
+    <hr>
+    {% if user.is_authenticated %}
+        <h1>Hello, dear {{ user.username }}!</h1>
+        
+        <form method="post" action="{% url 'logout_user' %}">
+            {% csrf_token %}
+            <button type="submit">Log Out</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login_user' %}">Log In</a><br>
+    {% endif %}    
+    
+    <a href="{% url 'create_post' %}">Create a Post</a>
+
     {% for post in posts %}
         <div>
             <h3>{{ post.author.username }}</h3>
@@ -16,7 +30,5 @@
     {% empty %}
         <p>No Posts yet.</p>
     {% endfor %}
-
-    <a href="{% url 'create_post' %}">Create a Post</a>
 </body>
 </html>

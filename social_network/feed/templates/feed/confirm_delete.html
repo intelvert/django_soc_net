@@ -14,5 +14,11 @@
         <button type="submit">Delete</button>
         <a href="{% url 'post_detail' post.id %}">Cancel</a>
     </form>
+    
+    <h4>Log Out</h4>
+        <form method="post" action="{% url 'logout_user' %}">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
 </body>
 </html>

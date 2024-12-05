@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .models import Post, Like
 from .forms import PostForm
@@ -8,6 +9,7 @@ def feed(request):
     posts=Post.objects.all().order_by('-created_at') #get all posts on main page
     return render(request, 'feed/feed.html', {'posts':posts})
 
+@login_required
 def create_post(request):
     if request.method=='POST':
         form=PostForm(request.POST)
@@ -25,6 +27,7 @@ def post_detail(request, post_id):
     post=get_object_or_404(Post, id=post_id)
     return render(request, 'feed/post_detail.html', {'post':post})
 
+@login_required
 def delete_post(request, post_id):
     post=get_object_or_404(Post, id=post_id)
     if post.author!=request.user:

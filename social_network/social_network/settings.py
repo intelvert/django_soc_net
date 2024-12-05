@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'feed',
+    'users',
     #'feed.apps.FeedConfig',
 ]
 
@@ -124,3 +125,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGOUT_REDIRECT_URL = 'feed'
+LOGIN_REDIRECT_URL = 'feed'
+LOGIN_URL = 'login_user'  # Убедитесь, что этот путь совпадает с вашим URL для входа
