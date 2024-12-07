@@ -5,7 +5,6 @@
 </head>
 <body>
     <h1>Feed</h1>
-    <hr>
     {% if user.is_authenticated %}
         <h1>Hello, dear {{ user.username }}!</h1>
         
@@ -18,12 +17,13 @@
     {% endif %}    
     
     <a href="{% url 'create_post' %}">Create a Post</a>
+    <hr>
 
     {% for post in posts %}
         <div>
-            <h3>{{ post.author.username }}</h3>
+            <h3>{{ post.author.username }}</h3> {% if post.been_edited %} <span> <i> edited </i> </span> {% endif %}
             <a href="{% url 'post_detail' post.id %}">Created at: {{ post.created_at }}</a>
-            <p>{{ post.post_text }}</p>
+            <p>{{ post.post_text }} <a href="{% url 'edit_post' post.id %}">edit</a> </p> 
             <p>Likes: {{ post.likes.count }}</p>
         </div>
         <hr>

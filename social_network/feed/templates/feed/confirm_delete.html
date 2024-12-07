@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Delete POST</title>
+    <title>Delete Post</title>
 </head>
 <body>
-    <h1>Delete Post</h1>
+    <h2>Delete Post</h2>
     <h2>Are you sure you want to delete this post?</h2>
-    <p><strong>{{ post.author }}</strong></p>
-    <p>{{ post.post_text }}</p>
+    <p><strong>{{ post.author.username }}</strong></p> {% if post.been_edited %} <span> edited </span> {% endif %}
+    <p>{{ post.post_text }} <a href="{% url 'edit_post' post.id %}">edit</a></p>
 
     <form method="post">
         {% csrf_token %}
@@ -15,10 +15,9 @@
         <a href="{% url 'post_detail' post.id %}">Cancel</a>
     </form>
     
-    <h4>Log Out</h4>
-        <form method="post" action="{% url 'logout_user' %}">
-            {% csrf_token %}
-            <button type="submit">Logout</button>
-        </form>
+    <form method="post" action="{% url 'logout_user' %}">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>

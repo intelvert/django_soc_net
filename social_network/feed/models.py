@@ -7,6 +7,7 @@ class Post(models.Model):
     author=models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     post_text=models.CharField(max_length=300)
     created_at=models.DateTimeField(auto_now_add=True)
+    been_edited=models.BooleanField(default=False)
     
     def __str__(self) -> str:
         return f'{self.author.username}: {self.post_text}'
