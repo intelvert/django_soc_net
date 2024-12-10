@@ -19,12 +19,12 @@
     <a href="{% url 'create_post' %}">Create a Post</a>
     <hr>
 
-    {% for post in posts %}
+    {% for item in publishable_posts %}
         <div>
-            <h3>{{ post.author.username }}</h3> {% if post.been_edited %} <span> <i> edited </i> </span> {% endif %}
-            <a href="{% url 'post_detail' post.id %}">Created at: {{ post.created_at }}</a>
-            <p>{{ post.post_text }} <a href="{% url 'edit_post' post.id %}">edit</a> </p> 
-            <p>Likes: {{ post.likes.count }}</p>
+            <h3>{{ item.post.author.username }}</h3> {% if item.post.been_edited %} <span> <i> edited </i> </span> {% endif %}
+            <a href="{% url 'post_detail' item.post.id %}">Created at: {{ item.post.created_at }}</a>
+            <p>{{ item.post.post_text }} {% if item.is_editable %} <a href="{% url 'post_detail' item.post.id %}">edit</a> {% endif %} </p> 
+            <p>Likes: {{ item.post.likes.count }}</p>
         </div>
         <hr>
     {% empty %}
