@@ -14,6 +14,7 @@
         </form>
     {% else %}
         <a href="{% url 'login_user' %}">Log In</a><br>
+        <a href="{% url 'register' %}">Register</a><br>
     {% endif %}    
     
     <a href="{% url 'create_post' %}">Create a Post</a>
