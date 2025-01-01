@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Posts Feed</title>
+    {% load static %}
 </head>
 <body>
     <h1>Feed</h1>
@@ -20,16 +21,27 @@
     <a href="{% url 'create_post' %}">Create a Post</a>
     <hr>
 
-    {% for post in posts %}
-        <div>
-            <h3>{{ post.author.username }}</h3> {% if post.been_edited %} <span> <i> edited </i> </span> {% endif %}
-            <a href="{% url 'post_detail' post.id %}">Created at: {{ post.created_at }}</a>
-            <p>{{ post.post_text }} <a href="{% url 'edit_post' post.id %}">edit</a> </p> 
-            <p>Likes: {{ post.likes.count }}</p>
+    {% for item in publishable_posts %}
+        <div class="post">
+            <h3>{{ item.post.author.username }}</h3> {% if item.post.been_edited %} <span> <i> edited </i> </span> {% endif %}
+            <a href="{% url 'post_detail' item.post.id %}">Created at: {{ item.post.created_at }}</a>
+            <p>{{ item.post.post_text }} <a href="{% url 'edit_post' item.post.id %}">edit</a> </p> 
+            <p> Likes: <span class="like-count" id="like-count-{{ item.post.id }}"> {{ item.post.likes.count }} </span></p>
+
+            {% if user.is_authenticated %}
+                <button class="like-button" data-post-id="{{item.post.id}}">
+                    {% if item.liked %}
+                        Unlike
+                    {% else %}
+                        Like
+                    {% endif %}
+                </button>
+            {% endif %}
         </div>
         <hr>
     {% empty %}
         <p>No Posts yet.</p>
     {% endfor %}
+    <script src="{% static 'feed/js/like.js' %}"></script>
 </body>
 </html>

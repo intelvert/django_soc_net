@@ -1,13 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from .models import Post, Like
 from .forms import PostForm
 # Create your views here.
 
 def feed(request):
     posts=Post.objects.all().order_by('-created_at') #get all posts on main page
-    return render(request, 'feed/feed.html', {'posts':posts})
+    publishable_posts = [
+        {
+            'post': post,
+            'liked': post.likes.filter(user=request.user).exists() if request.user.is_authenticated else False,
+        }
+        for post in posts
+    ]
+    return render(request, 'feed/feed.html', {'publishable_posts': publishable_posts})
+
 
 @login_required
 def create_post(request):
@@ -25,7 +33,9 @@ def create_post(request):
 
 def post_detail(request, post_id):
     post=get_object_or_404(Post, id=post_id)
-    return render(request, 'feed/post_detail.html', {'post':post})
+    liked=post.likes.filter(user=request.user).exists() if request.user.is_authenticated else False
+    return render(request, 'feed/post_detail.html', {'post':post, 'liked': liked})
+
 
 @login_required
 def delete_post(request, post_id):
@@ -36,6 +46,7 @@ def delete_post(request, post_id):
         post.delete()
         return redirect('feed')
     return render(request, 'feed/confirm_delete.html', {'post':post})
+
 
 @login_required
 def edit_post(request, post_id):
@@ -52,4 +63,19 @@ def edit_post(request, post_id):
         form=PostForm(instance=post)
     return render(request, 'feed/edit_post.html', {'form':form, 'post':post})
 
-#def like_post
+@login_required
+def like_post(request, post_id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST requests are allowed.'}, status=405)
+        
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
+    like = Like.objects.filter(user=user, post=post)
+    
+    if like.exists():
+        like.delete()
+        return JsonResponse({'liked': False, 'like_count': post.likes.count()})
+    else:
+        Like.objects.create(user=user, post=post)
+        return JsonResponse({'liked': True, 'like_count': post.likes.count()})
+

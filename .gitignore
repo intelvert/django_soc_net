@@ -22,7 +22,11 @@ db.sqlite3
 
 # Media and static files
 media/
-static/
+static/*
+/staticfiles/
+
+!static/feed/js/*
+!static/feed/css/*
 
 # Config and IDE
 .vscode/
