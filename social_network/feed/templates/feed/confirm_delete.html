@@ -7,7 +7,7 @@
     <h2>Delete Post</h2>
     <h2>Are you sure you want to delete this post?</h2>
     <p><strong>{{ post.author.username }}</strong></p> {% if post.been_edited %} <span> edited </span> {% endif %}
-    <p>{{ post.post_text }} <a href="{% url 'edit_post' post.id %}">edit</a></p>
+    <p>{{ post.post_text }}</p>
 
     <form method="post">
         {% csrf_token %}
