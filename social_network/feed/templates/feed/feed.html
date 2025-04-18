@@ -26,7 +26,6 @@
             <h3>{{ item.post.author.username }}</h3> {% if item.post.been_edited %} <span> <i> edited </i> </span> {% endif %}
             <a href="{% url 'post_detail' item.post.id %}">Created at: {{ item.post.created_at }}</a>
             <p>{{ item.post.post_text }} {% if item.is_editable %} <a href="{% url 'post_detail' item.post.id %}">edit</a> {% endif %} </p> 
-            <p>Likes: {{ post.likes.count }}</p>
             <p> Likes: <span class="like-count" id="like-count-{{ item.post.id }}"> {{ item.post.likes.count }} </span></p>
 
 

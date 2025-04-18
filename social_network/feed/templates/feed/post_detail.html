@@ -18,6 +18,8 @@
             </form>
         {% elif error_message %}
             <p style="color:red;">{{ error_message }} </p>
+        {% else %}
+            {{post.post_text}}
         {% endif %}
 
         <p> Likes: <span class="like-count" id="like-count-{{ post.id }}"> {{ post.likes.count }} </span></p>
